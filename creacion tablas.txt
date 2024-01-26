@@ -1,0 +1,82 @@
+CREATE DATABASE IF NOT EXISTS proyecto_Accenture;
+
+USE proyecto_Accenture;
+
+CREATE TABLE IF NOT EXISTS propietario (
+    propietario_id INT PRIMARY KEY AUTO_INCREMENT,
+    Nombre VARCHAR(255),
+    Dni VARCHAR(15),
+    Ciudad VARCHAR(255),
+    Telefono VARCHAR(15)
+);
+
+CREATE TABLE IF NOT EXISTS marca (
+    marca_id INT PRIMARY KEY AUTO_INCREMENT,
+    nombre VARCHAR(255)
+);
+
+CREATE TABLE IF NOT EXISTS modelo (
+    modelo_id INT PRIMARY KEY AUTO_INCREMENT,
+    modelo VARCHAR(255),
+    marca_id INT,
+    FOREIGN KEY (marca_id) REFERENCES marca(marca_id)
+);
+
+CREATE TABLE IF NOT EXISTS coche (
+    coche_id INT PRIMARY KEY AUTO_INCREMENT,
+    matricula VARCHAR(15),
+    fecha_matriculacion DATE,
+    precio DECIMAL(10, 2),
+    modelo_id INT,
+    marca_id INT,
+    propietario_id INT,
+    FOREIGN KEY (modelo_id) REFERENCES modelo(modelo_id),
+    FOREIGN KEY (marca_id) REFERENCES marca(marca_id),
+    FOREIGN KEY (propietario_id) REFERENCES propietario(propietario_id)
+);
+
+INSERT INTO Propietario (Nombre, Dni, Ciudad, Telefono)
+VALUES
+    ('Juan Pérez', '123456789A', 'Ciudad A', '123-456-7890'),
+    ('María Rodríguez', '987654321B', 'Ciudad B', '987-654-3210'),    
+    ('Elena Gómez', '567890123C', 'Ciudad C', '567-890-1230'),
+     ('Ana Pi', '123456789A', 'Ciudad D', '777-123-486'),
+    ('María García', '45287962B', 'Ciudad Lineal', '963-852-789'),    
+    ('Pedro Gómez', '95175385X', 'Ciudad Real', '588-444-777'),
+     ('Juan Ramón Pérez', '88552211F', 'Colmena', '654-000-789'),
+    ('Marta Rodríguez', '45678912A', 'Caudillo', '652-995-789'),    
+    ('Agustín Gómez', '32165487M', 'Pisuerga', '85-654-18870');
+
+
+INSERT INTO Marca (nombre)
+VALUES
+    ('Toyota'),
+    ('Ford'),    
+    ('Honda'),
+    ('BMW'),
+    ('Seat'),
+    ('Mercedes');
+
+
+INSERT INTO Modelo (modelo, marca_id)
+VALUES
+    ('Corolla', 1), -- El 1 corresponde al ID de Toyota
+    ('Focus', 2),   -- El 2 corresponde al ID de Ford   
+    ('Civic', 3),   -- El 3 corresponde al ID de Honda
+    ('Ibiza', 5),	-- El 5 corresponde al ID de Seat
+    ('A180', 6),	-- El 6 corresponde al ID de Mercedes
+    ('I3', 4);		-- El 4 corresponde al ID de BMW
+
+
+
+INSERT INTO Coche (matricula, fecha_matriculacion, precio, modelo_id, marca_id, propietario_id)
+VALUES
+    ('1234ABC', '2023-01-15', 20000.00, 1, 1, 4), -- Modelo: Corolla, Marca: Toyota
+    ('7890XYZ', '2022-12-10', 18000.50, 2, 2,6), -- Modelo: Focus, Marca: Ford    
+    ('4564LMN', '2023-02-20', 22000.75, 3, 3,1),  -- Modelo: Civic, Marca: Honda
+    ('7891JKL', '2022-11-05', 21500.00, 4, 1,9), -- Modelo: Camry, Marca: Toyota
+    ('1231PQR', '2023-03-25', 19500.75, 5, 2,5), -- Modelo: Escape, Marca: Ford
+    ('4560XYZ', '2022-10-15', 23000.50, 6, 3,2), -- Modelo: Accord, Marca: Honda
+    ('3344GMX', '2022-12-03', 19500, 4, 5,8),	   -- Modelo: Ibiza, Marca: Seat
+    ('8866GHX', '2023-01-01', 18950.99, 6,4,3),  -- Modelo: I3, Marca: BMW
+    ('8899HXM', '2023-01-01', 29999.99, 5,6,7);  -- Modelo: A180, Marca: Mercedes

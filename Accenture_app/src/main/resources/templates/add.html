@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Añadir Nueva Marca</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Latest compiled JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</head>
+<body>
+  <h2>Añadir nueva marca de Vehiculo</h2>
+  <form action="#" th:action="@{/api/addbrand}" th:object="${marca}" method="post">
+          <label for="name">Nombre de la Marca</label>
+          <input type="text" th:field="*{name}" id="name" placeholder="Nombre">
+          <span th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></span>
+        <input class="btn btn-success" type="submit" value="Añadir nuevo vehiculo">
+    </form>
+</body>
+</html>
