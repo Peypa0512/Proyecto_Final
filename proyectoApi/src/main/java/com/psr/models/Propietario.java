@@ -28,11 +28,11 @@ public class Propietario {
         this.phone = phone;
     }
 
-    public int getownerId() {
+    public int getOwnerId() {
         return ownerId;
     }
 
-    public void setownerId(int ownerId) {
+    public void setOwnerId(int ownerId) {
         this.ownerId = ownerId;
     }
 

@@ -1,10 +1,16 @@
 package com.psr.Controller;
 
+import com.psr.models.Marca;
 import com.psr.models.Modelo;
+import com.psr.repository.MarcaRepository;
 import com.psr.repository.ModeloRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -13,39 +19,64 @@ public class ModeloControl {
 
     // accedemos a los datos del repositorio
     @Autowired
-    private ModeloRepository modeloRepository;
+    ModeloRepository modeloRepository;
+
+    @Autowired
+    MarcaRepository marcaRepository;
 
     @GetMapping("/modelo")
-    public Iterable<Modelo> dataAll() {
-        return modeloRepository.findAll();
+    public ResponseEntity<List<Modelo>> dataAll() {
+        List<Modelo> res = new ArrayList<>();
+        modeloRepository.findAll().forEach(res::add);
+        if(res.isEmpty()){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(res, HttpStatus.OK);
     }
 
     @GetMapping("/modelo/{id}")
-    public Modelo getModelo(@PathVariable int id) {
-        return modeloRepository.findById(id).get();
+    public ResponseEntity<Modelo> getModel(@PathVariable("int") int id) {
+        Modelo model = modeloRepository.findById(id).orElse(null);
+        if (model == null){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }else{
+            return new ResponseEntity<>(model, HttpStatus.OK);
+        }
     }
+    //Hasta aqui-> falta probarlo
+    @PostMapping("/marca/{id}/modelo")
+    public ResponseEntity<Modelo> addModel(@PathVariable("id") int id, @RequestBody Modelo modelo) {
 
-    @PostMapping("/modelo")
-    public Modelo addModelo(@RequestBody Modelo modelo) {
-
-        return modeloRepository.save(modelo);
+        Marca brand = marcaRepository.findById(id).orElse(null);
+        if (brand == null){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        Modelo aux = new Modelo(modelo.getModel(), brand);
+        return new ResponseEntity<>(modeloRepository.save(aux), HttpStatus.CREATED);
     }
 
     @PutMapping("/modelo/{id}")
-    public Modelo updateModel(@RequestBody Modelo modelo, @PathVariable int id) {
-        try {
-            Modelo model = modeloRepository.findById(id).get();
-            model.setModel(modelo.getModel());
-            System.out.println(model);
-            return modeloRepository.save(model);
-        } catch (Exception e) {
-            return new Modelo("Modelo no encontrado");
-        }
+    public ResponseEntity<Modelo> updateModel(@PathVariable("id") int id, @RequestBody Modelo modelo ) {
+
+            Modelo aux = modeloRepository.findById(id).orElse(null);
+
+            if(aux == null) {
+               return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
+            aux.setModel(modelo.getModel());
+            if(modelo.getMarca() != null){
+                Marca brand = marcaRepository.findById(modelo.getMarca().getBrandId()).orElse(null);
+                if(brand != null){
+                    aux.setMarca(brand);
+                }
+            }
+            return new ResponseEntity<>(modeloRepository.save(aux), HttpStatus.OK);
+
     }
 
     @DeleteMapping("/modelo/{id}")
-    public String deleteModelo(@PathVariable int id) {
+    public ResponseEntity<HttpStatus> deleteModel(@PathVariable("int") int id) {
         modeloRepository.deleteById(id);
-        return "Modelo Borrada";
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }

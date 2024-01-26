@@ -12,21 +12,26 @@ public class Coche {
     @Column(name = "coche_id", nullable = true)
     private int carId;
 
-    @Column(name="matricula",nullable = true, unique=true)
+    @Column(name="matricula",nullable = false, unique=true)
     private String registration;
-    @Column(name="fecha_matriculacion", nullable = true)
+    @Column(name="fecha_matriculacion", nullable = false)
     private Date regDate;
 
-    @Column(name="precio", nullable = true)
+    @Column(name="precio", nullable = false)
     private Double pvp;
+
+    @ManyToOne
+    @JoinColumn(name = "propietario_id", nullable = false)
+    private Propietario owner;
 
     public Coche() {
     }
 
-    public Coche(String registration, Date regDate, Double pvp) {
+    public Coche(String registration, Date regDate, Double pvp, Propietario owner) {
         this.registration = registration;
         this.regDate = regDate;
         this.pvp = pvp;
+        this.owner = owner;
     }
 
     public int getCarId() {
@@ -61,13 +66,17 @@ public class Coche {
         this.pvp = pvp;
     }
 
+    public Propietario getOwner() {
+        return owner;
+    }
+
+    public void setOwner(Propietario owner) {
+        this.owner = owner;
+    }
+
     @Override
     public String toString() {
-        return "coche{" +
-                "carId=" + carId +
-                ", registration='" + registration + '\'' +
-                ", regDate=" + regDate +
-                ", pvp=" + pvp +
-                '}';
+        return "coche{carId=" + carId + ", registration=" + registration + ", regDate=" + regDate +
+                ", pvp=" + pvp + ", owner=" + owner + '}';
     }
 }

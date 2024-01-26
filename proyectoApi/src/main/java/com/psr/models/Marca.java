@@ -22,11 +22,11 @@ public class Marca {
         this.name = name;
     }
 
-    public int getbrandId() {
+    public int getBrandId() {
         return brandId;
     }
 
-    public void setbrandId(int brandId) {
+    public void setBrandId(int brandId) {
         this.brandId = brandId;
     }
 
