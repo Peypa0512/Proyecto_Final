@@ -1,8 +1,10 @@
 package com.psr.Controller;
 
 import com.psr.models.Coche;
+import com.psr.models.Modelo;
 import com.psr.models.Propietario;
 import com.psr.repository.CocheRepository;
+import com.psr.repository.ModeloRepository;
 import com.psr.repository.PropietarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -11,11 +13,10 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping(path="/api")
-public class CocheControl {
+public class CocheController {
 
     // accedemos a los datos del repositorio
     @Autowired
@@ -24,8 +25,21 @@ public class CocheControl {
     @Autowired
     private PropietarioRepository ownerRepository;
 
+    @Autowired
+    private ModeloRepository modelRepository;
+
     @GetMapping("/coche")
     public ResponseEntity<List<Coche>> dataAll() {
+        List<Coche> res = new ArrayList<>();
+        carRepository.findAll().forEach(res::add);
+        if (res.isEmpty()){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(res, HttpStatus.OK);
+    }
+
+    @GetMapping("/coche/modelo")
+    public ResponseEntity<List<Coche>> getModelCoche() {
         List<Coche> res = new ArrayList<>();
         carRepository.findAll().forEach(res::add);
         if (res.isEmpty()){
@@ -44,7 +58,18 @@ public class CocheControl {
             return new ResponseEntity<>(car, HttpStatus.OK);
         }
     }
-//falta por probar -->
+
+    @GetMapping("/coche/modelo/{id}")
+    public ResponseEntity<Coche> getModelCarById(@PathVariable("id") int id) {
+        Coche car = carRepository.findById(id).orElse(null);
+
+        if (car == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }else{
+            return new ResponseEntity<>(car, HttpStatus.OK);
+        }
+    }
+
     @PostMapping("/Propietario/{id}/coche")
     public ResponseEntity<Coche> addCoche(@PathVariable("id") int id, @RequestBody Coche car) {
         Propietario newOwner = ownerRepository.findById(id).orElse(null);
@@ -56,6 +81,22 @@ public class CocheControl {
         return new ResponseEntity<>(newCar, HttpStatus.OK);
 
     }
+
+
+    @PostMapping("/coche/{idcar}/modelo/{idmodel}")
+    public ResponseEntity<Coche> addModelCar(@PathVariable("idcar") int idcar,
+                                                @PathVariable("idmodel") int idmodel) {
+
+        Coche car = carRepository.findById(idcar).orElse(null);
+        Modelo model = modelRepository.findById(idmodel).orElse(null);
+        if (car == null || model == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        car.getModel().add(model);
+
+        return new ResponseEntity<>(carRepository.save(car), HttpStatus.CREATED);
+    }
+
 
         @PutMapping("/coche/{id}")
         public ResponseEntity<Coche> updateCar(@PathVariable("id") int id, @RequestBody Coche car){
@@ -81,6 +122,19 @@ public class CocheControl {
 
         carRepository.deleteById(id);
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @DeleteMapping("/coche/{idcar}/modelo/{idmodel}")
+    public ResponseEntity<Coche> deleteCarModel(@PathVariable("idcar") int idcar,
+                                                   @PathVariable("idmodel") int idmodel) {
+        Coche car = carRepository.findById(idcar).orElse(null);
+        Modelo model = modelRepository.findById(idmodel).orElse(null);
+        if (car == null || model == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        car.getModel().remove(model);
+
+        return new ResponseEntity<>(carRepository.save(car), HttpStatus.OK);
     }
 
 }

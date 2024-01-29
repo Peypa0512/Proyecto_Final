@@ -2,6 +2,7 @@ package com.psr.Controller;
 
 import com.psr.models.Marca;
 import com.psr.models.Modelo;
+import com.psr.repository.CocheRepository;
 import com.psr.repository.MarcaRepository;
 import com.psr.repository.ModeloRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,11 +12,10 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping(path="/api")
-public class ModeloControl {
+public class ModeloController {
 
     // accedemos a los datos del repositorio
     @Autowired
@@ -23,6 +23,8 @@ public class ModeloControl {
 
     @Autowired
     MarcaRepository marcaRepository;
+
+
 
     @GetMapping("/modelo")
     public ResponseEntity<List<Modelo>> dataAll() {
@@ -33,6 +35,8 @@ public class ModeloControl {
         }
         return new ResponseEntity<>(res, HttpStatus.OK);
     }
+
+
 
     @GetMapping("/modelo/{id}")
     public ResponseEntity<Modelo> getModel(@PathVariable("int") int id) {

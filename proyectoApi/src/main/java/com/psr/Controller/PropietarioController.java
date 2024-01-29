@@ -9,11 +9,10 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping(path="/api")
-public class PropietarioControl {
+public class PropietarioController {
 
     // accedemos a los datos del repositorio
     @Autowired

@@ -13,7 +13,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping(path="/api")
-public class MarcaControl {
+public class MarcaController {
 
     // accedemos a los datos del repositorio
     @Autowired

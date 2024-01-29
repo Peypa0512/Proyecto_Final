@@ -3,6 +3,8 @@ package com.psr.models;
 import jakarta.persistence.*;
 
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 public class Coche {
@@ -23,6 +25,15 @@ public class Coche {
     @ManyToOne
     @JoinColumn(name = "propietario_id", nullable = false)
     private Propietario owner;
+
+    @ManyToMany(cascade = {CascadeType.MERGE})
+    // Especificamos los datos de la tabla intermedia
+    @JoinTable(
+            name = "modelo_coche", // NOmbre
+            joinColumns = {@JoinColumn(name = "carid")}, // MI foreign key
+            inverseJoinColumns = {@JoinColumn(name = "modelid")} // Foreign Key de la otra entidad
+    )
+    Set<Modelo> model = new HashSet<>();
 
     public Coche() {
     }
@@ -74,9 +85,23 @@ public class Coche {
         this.owner = owner;
     }
 
+    public Set<Modelo> getModel() {
+        return model;
+    }
+
+    public void setModel(Set<Modelo> model) {
+        this.model = model;
+    }
+
     @Override
     public String toString() {
-        return "coche{carId=" + carId + ", registration=" + registration + ", regDate=" + regDate +
-                ", pvp=" + pvp + ", owner=" + owner + '}';
+        return "Coche{" +
+                "carId=" + carId +
+                ", registration='" + registration + '\'' +
+                ", regDate=" + regDate +
+                ", pvp=" + pvp +
+                ", owner=" + owner +
+                ", model=" + model +
+                '}';
     }
 }

@@ -27,13 +27,32 @@ CREATE TABLE IF NOT EXISTS coche (
     matricula VARCHAR(15),
     fecha_matriculacion DATE,
     precio DECIMAL(10, 2),
-    modelo_id INT,
-    marca_id INT,
+    modelo_id INT, -- quitar
+    marca_id INT, -- quitar
     propietario_id INT,
-    FOREIGN KEY (modelo_id) REFERENCES modelo(modelo_id),
-    FOREIGN KEY (marca_id) REFERENCES marca(marca_id),
+    FOREIGN KEY (modelo_id) REFERENCES modelo(modelo_id), -- quitar
+    FOREIGN KEY (marca_id) REFERENCES marca(marca_id), -- quitar
     FOREIGN KEY (propietario_id) REFERENCES propietario(propietario_id)
 );
+
+CREATE TABLE `proyecto_accenture`.`modelo_coche` (
+  `idmodelo_coche` INT NOT NULL,
+  `modelId` INT NOT NULL,
+  `carId` INT NOT NULL,
+  PRIMARY KEY (`idmodelo_coche`),
+  INDEX `modelId_idx` (`modelId` ASC) ,
+  INDEX `carId_idx` (`carId` ASC) ,
+  CONSTRAINT `modelId`
+    FOREIGN KEY (`modelId`)
+    REFERENCES `proyecto_accenture`.`modelo` (`modelo_id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `carId`
+    FOREIGN KEY (`carId`)
+    REFERENCES `proyecto_accenture`.`coche` (`coche_id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION);
+
 
 INSERT INTO Propietario (Nombre, Dni, Ciudad, Telefono)
 VALUES
@@ -80,3 +99,13 @@ VALUES
     ('3344GMX', '2022-12-03', 19500, 4, 5,8),	   -- Modelo: Ibiza, Marca: Seat
     ('8866GHX', '2023-01-01', 18950.99, 6,4,3),  -- Modelo: I3, Marca: BMW
     ('8899HXM', '2023-01-01', 29999.99, 5,6,7);  -- Modelo: A180, Marca: Mercedes
+
+INSERT INTO Modelo_coche (modelId, carId)
+VALUES
+    (1, 1), -- El 1 corresponde al ID de Toyota
+    (2, 2),   -- El 2 corresponde al ID de Ford   
+    (4, 1),   -- El 3 corresponde al ID de Honda
+    (6, 3),	-- El 5 corresponde al ID de Seat
+    (4, 5),	-- El 6 corresponde al ID de Mercedes
+    (6,4),		-- El 4 corresponde al ID de BMW
+    (5,6);
