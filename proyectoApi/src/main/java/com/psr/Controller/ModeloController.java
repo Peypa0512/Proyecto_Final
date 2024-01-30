@@ -2,7 +2,6 @@ package com.psr.Controller;
 
 import com.psr.models.Marca;
 import com.psr.models.Modelo;
-import com.psr.repository.CocheRepository;
 import com.psr.repository.MarcaRepository;
 import com.psr.repository.ModeloRepository;
 import org.springframework.beans.factory.annotation.Autowired;

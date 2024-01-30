@@ -36,7 +36,7 @@ CREATE TABLE IF NOT EXISTS coche (
 );
 
 CREATE TABLE `proyecto_accenture`.`modelo_coche` (
-  `idmodelo_coche` INT NOT NULL,
+  `idmodelo_coche` INT NOT NULL AUTO_INCREMENT,
   `modelId` INT NOT NULL,
   `carId` INT NOT NULL,
   PRIMARY KEY (`idmodelo_coche`),
@@ -50,6 +50,21 @@ CREATE TABLE `proyecto_accenture`.`modelo_coche` (
   CONSTRAINT `carId`
     FOREIGN KEY (`carId`)
     REFERENCES `proyecto_accenture`.`coche` (`coche_id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION);
+
+CREATE TABLE `proyecto_accenture`.`pack` (
+  `idpack` INT NOT NULL AUTO_INCREMENT,
+  `color` VARCHAR(45) NOT NULL,
+  `engine` VARCHAR(45) NOT NULL,
+  `cv` INT NOT NULL,
+  `car_finish` VARCHAR(45) NOT NULL,
+  `model` INT NOT NULL,
+  PRIMARY KEY (`idpack`),
+  INDEX `model_idx` (`model` ASC) ,
+  CONSTRAINT `model`
+    FOREIGN KEY (`model`)
+    REFERENCES `proyecto_accenture`.`modelo` (`modelo_id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION);
 
@@ -79,33 +94,50 @@ VALUES
 
 INSERT INTO Modelo (modelo, marca_id)
 VALUES
-    ('Corolla', 1), -- El 1 corresponde al ID de Toyota
-    ('Focus', 2),   -- El 2 corresponde al ID de Ford   
-    ('Civic', 3),   -- El 3 corresponde al ID de Honda
+    ('Corolla', 1), 	-- El 1 corresponde al ID de Toyota
+    ('Focus', 2),   	-- El 2 corresponde al ID de Ford   
+    ('Civic', 3),   	-- El 3 corresponde al ID de Honda
     ('Ibiza', 5),	-- El 5 corresponde al ID de Seat
     ('A180', 6),	-- El 6 corresponde al ID de Mercedes
     ('I3', 4);		-- El 4 corresponde al ID de BMW
 
 
 
-INSERT INTO Coche (matricula, fecha_matriculacion, precio, modelo_id, marca_id, propietario_id)
+INSERT INTO Coche (matricula, fecha_matriculacion, precio, modelo_id, propietario_id)
 VALUES
-    ('1234ABC', '2023-01-15', 20000.00, 1, 1, 4), -- Modelo: Corolla, Marca: Toyota
-    ('7890XYZ', '2022-12-10', 18000.50, 2, 2,6), -- Modelo: Focus, Marca: Ford    
-    ('4564LMN', '2023-02-20', 22000.75, 3, 3,1),  -- Modelo: Civic, Marca: Honda
-    ('7891JKL', '2022-11-05', 21500.00, 4, 1,9), -- Modelo: Camry, Marca: Toyota
-    ('1231PQR', '2023-03-25', 19500.75, 5, 2,5), -- Modelo: Escape, Marca: Ford
-    ('4560XYZ', '2022-10-15', 23000.50, 6, 3,2), -- Modelo: Accord, Marca: Honda
-    ('3344GMX', '2022-12-03', 19500, 4, 5,8),	   -- Modelo: Ibiza, Marca: Seat
-    ('8866GHX', '2023-01-01', 18950.99, 6,4,3),  -- Modelo: I3, Marca: BMW
-    ('8899HXM', '2023-01-01', 29999.99, 5,6,7);  -- Modelo: A180, Marca: Mercedes
+    ('1234ABC', '2023-01-15', 20000.00, 1, 4), 	-- Modelo: Corolla, Marca: Toyota
+    ('7890XYZ', '2022-12-10', 18000.50, 2, 6),	-- Modelo: Focus, Marca: Ford    
+    ('4564LMN', '2023-02-20', 22000.75, 3, 1),  -- Modelo: Civic, Marca: Honda
+    ('7891JKL', '2022-11-05', 21500.00, 4, 9), 	-- Modelo: Camry, Marca: Toyota
+    ('1231PQR', '2023-03-25', 19500.75, 5, 5), 	-- Modelo: Escape, Marca: Ford
+    ('4560XYZ', '2022-10-15', 23000.50, 6, 2), 	-- Modelo: Accord, Marca: Honda
+    ('3344GMX', '2022-12-03', 19500, 4, 8), 	-- Modelo: Ibiza, Marca: Seat
+    ('8866GHX', '2023-01-01', 18950.99, 6, 3),  -- Modelo: I3, Marca: BMW
+    ('8899HXM', '2023-01-01', 29999.99, 5, 7),  -- Modelo: A180, Marca: Mercedes
+    ('3358JZD',	'2020-01-14', 15000.00,	3, 3);  -- Modelo: Civid, Marca:Toyota
 
 INSERT INTO Modelo_coche (modelId, carId)
 VALUES
-    (1, 1), -- El 1 corresponde al ID de Toyota
-    (2, 2),   -- El 2 corresponde al ID de Ford   
-    (4, 1),   -- El 3 corresponde al ID de Honda
-    (6, 3),	-- El 5 corresponde al ID de Seat
-    (4, 5),	-- El 6 corresponde al ID de Mercedes
-    (6,4),		-- El 4 corresponde al ID de BMW
-    (5,6);
+    (1, 1), 	-- El 1 corresponde al ID de Toyota
+    (2, 2),   	-- El 2 corresponde al ID de Ford   
+    (4, 1),   
+    (6, 3),	-- El 3 corresponde al ID de Honda
+    (4, 5),	-- El 5 corresponde al ID de Seat
+    (6, 4),	-- El 4 corresponde al ID de BMW
+    (5, 6),	-- El 6 corresponde al ID de Mercedes
+    (3, 8),
+    (1, 10),
+    (2, 9);
+
+INSERT INTO pack (color, engine, cv, car_finish, model) 
+VALUES 
+ ('Rojo', 'Gasolina', 150, 'Sport', 1),
+ ('Azul', 'Diesel', 120, 'Deluxe', 3),
+ ('Blanco', 'Híbrido', 180, 'Avanzado', 2),
+ ('Negro', 'Eléctrico', 200, 'Basic', 4),
+ ('Plata', 'Gasolina', 130, 'Sport', 6),
+ ('Gris', 'Diesel', 110, 'Deluxe', 6),
+ ('Verde', 'Híbrido', 170, 'Avanzado', 1),
+ ('Amarillo', 'Eléctrico', 190, 'Basic', 4),
+ ('Naranja', 'Gasolina', 140, 'Sport', 5),
+ ('Azul Marino', 'Diesel', 125, 'Deluxe', 5);

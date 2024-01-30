@@ -82,6 +82,14 @@ public class CocheController {
 
     }
 
+    @GetMapping("/propietario/{id}/coches")
+    public ResponseEntity<List<Coche>> getCochesByPropietario(@PathVariable("id") int ownerId) {
+        List<Coche> coches = carRepository.findByOwnerOwnerId(ownerId);
+        if (coches.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(coches, HttpStatus.OK);
+    }
 
     @PostMapping("/coche/{idcar}/modelo/{idmodel}")
     public ResponseEntity<Coche> addModelCar(@PathVariable("idcar") int idcar,
