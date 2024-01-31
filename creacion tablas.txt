@@ -2,52 +2,52 @@ CREATE DATABASE IF NOT EXISTS proyecto_Accenture;
 
 USE proyecto_Accenture;
 
-CREATE TABLE IF NOT EXISTS propietario (
-    propietario_id INT PRIMARY KEY AUTO_INCREMENT,
-    Nombre VARCHAR(255),
+CREATE TABLE IF NOT EXISTS owner (
+    owner_id INT PRIMARY KEY AUTO_INCREMENT,
+    Name VARCHAR(255),
     Dni VARCHAR(15),
-    Ciudad VARCHAR(255),
-    Telefono VARCHAR(15)
+    City VARCHAR(255),
+    phone VARCHAR(15)
 );
 
-CREATE TABLE IF NOT EXISTS marca (
-    marca_id INT PRIMARY KEY AUTO_INCREMENT,
-    nombre VARCHAR(255)
+CREATE TABLE IF NOT EXISTS brand (
+    brand_id INT PRIMARY KEY AUTO_INCREMENT,
+    name VARCHAR(25)
 );
 
-CREATE TABLE IF NOT EXISTS modelo (
-    modelo_id INT PRIMARY KEY AUTO_INCREMENT,
-    modelo VARCHAR(255),
-    marca_id INT,
-    FOREIGN KEY (marca_id) REFERENCES marca(marca_id)
+CREATE TABLE IF NOT EXISTS model (
+    model_id INT PRIMARY KEY AUTO_INCREMENT,
+    model VARCHAR(25),
+    brand_id INT,
+    FOREIGN KEY (brand_id) REFERENCES brand(brand_id)
 );
 
-CREATE TABLE IF NOT EXISTS coche (
-    coche_id INT PRIMARY KEY AUTO_INCREMENT,
-    matricula VARCHAR(15),
-    fecha_matriculacion DATE,
-    precio DECIMAL(10, 2),
-    modelo_id INT,     
-    propietario_id INT,
-    FOREIGN KEY (modelo_id) REFERENCES modelo(modelo_id), -- quitar    
-    FOREIGN KEY (propietario_id) REFERENCES propietario(propietario_id)
+CREATE TABLE IF NOT EXISTS car (
+    car_id INT PRIMARY KEY AUTO_INCREMENT,
+    registration VARCHAR(15),
+    regDate DATE,
+    pvp DECIMAL(10, 2),
+    model_id INT,     
+    owner_id INT,
+    FOREIGN KEY (model_id) REFERENCES model(modelo_id),     
+    FOREIGN KEY (owner_id) REFERENCES owner(owner_id)
 );
 
-CREATE TABLE `proyecto_accenture`.`modelo_coche` (
+CREATE TABLE `proyecto_accenture`.`model_car` (
   `idmodelo_coche` INT NOT NULL AUTO_INCREMENT,
   `modelId` INT NOT NULL,
   `carId` INT NOT NULL,
-  PRIMARY KEY (`idmodelo_coche`),
+  PRIMARY KEY (`idmodel_car`),
   INDEX `modelId_idx` (`modelId` ASC) ,
   INDEX `carId_idx` (`carId` ASC) ,
   CONSTRAINT `modelId`
     FOREIGN KEY (`modelId`)
-    REFERENCES `proyecto_accenture`.`modelo` (`modelo_id`)
+    REFERENCES `proyecto_accenture`.`model` (`model_id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `carId`
     FOREIGN KEY (`carId`)
-    REFERENCES `proyecto_accenture`.`coche` (`coche_id`)
+    REFERENCES `proyecto_accenture`.`car` (`car_id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION);
 
@@ -60,15 +60,15 @@ CREATE TABLE `proyecto_accenture`.`pack` (
   `car_finish` VARCHAR(45) NOT NULL,
   `coche_id` INT NOT NULL,
   PRIMARY KEY (`idpack`),
-  INDEX `cocheId_idx` (`coche_id` ASC) ,
-  CONSTRAINT `cocheId`
-    FOREIGN KEY (`coche_id`)
-    REFERENCES `proyecto_accenture`.`coche` (`coche_id`)
+  INDEX `cocheId_idx` (`car_id` ASC) ,
+  CONSTRAINT `carId`
+    FOREIGN KEY (`car_id`)
+    REFERENCES `proyecto_accenture`.`car` (`car_id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION);
 
 
-INSERT INTO Propietario (Nombre, Dni, Ciudad, Telefono)
+INSERT INTO owner (owner, Dni, City, phone)
 VALUES
     ('Juan Pérez', '123456789A', 'Ciudad A', '123-456-7890'),
     ('María Rodríguez', '987654321B', 'Ciudad B', '987-654-3210'),    
@@ -81,7 +81,7 @@ VALUES
     ('Agustín Gómez', '32165487M', 'Pisuerga', '85-654-18870');
 
 
-INSERT INTO Marca (nombre)
+INSERT INTO brand (name)
 VALUES
     ('Toyota'),
     ('Ford'),    
@@ -91,7 +91,7 @@ VALUES
     ('Mercedes');
 
 
-INSERT INTO Modelo (modelo, marca_id)
+INSERT INTO Model (model, brand_id)
 VALUES
     ('Corolla', 1), 	-- El 1 corresponde al ID de Toyota
     ('Focus', 2),   	-- El 2 corresponde al ID de Ford   
@@ -102,7 +102,7 @@ VALUES
 
 
 
-INSERT INTO Coche (matricula, fecha_matriculacion, precio, modelo_id, propietario_id)
+INSERT INTO Car (registration, regData, pvp, model_id, owner_id)
 VALUES
     ('1234ABC', '2023-01-15', 20000.00, 1, 4), 	-- Modelo: Corolla, Marca: Toyota
     ('7890XYZ', '2022-12-10', 18000.50, 2, 6),	-- Modelo: Focus, Marca: Ford    
@@ -115,7 +115,7 @@ VALUES
     ('8899HXM', '2023-01-01', 29999.99, 5, 7),  -- Modelo: A180, Marca: Mercedes
     ('3358JZD',	'2020-01-14', 15000.00,	3, 3);  -- Modelo: Civid, Marca:Toyota
 
-INSERT INTO Modelo_coche (modelId, carId)
+INSERT INTO Model_car (modelId, carId)
 VALUES
     (1, 1), 	-- El 1 corresponde al ID de Toyota
     (2, 2),   	-- El 2 corresponde al ID de Ford   
@@ -128,7 +128,7 @@ VALUES
     (1, 10),
     (2, 9);
 
-INSERT INTO pack (color, finish, engine, cv, car_finish, coche_id) 
+INSERT INTO pack (color, finish, engine, cv, car_finish, car_id) 
 VALUES 
  ('Rojo', 'Mate, 'Gasolina', 150, 'Sport', 1),
  ('Azul', ''Metalizado', Diesel', 120, 'Deluxe', 3),

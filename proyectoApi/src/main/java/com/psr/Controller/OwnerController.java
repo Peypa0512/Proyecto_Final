@@ -1,12 +1,10 @@
 package com.psr.Controller;
 
-import com.psr.models.Coche;
-import com.psr.models.Propietario;
-import com.psr.repository.PropietarioRepository;
+import com.psr.models.Owner;
+import com.psr.repository.OwnerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -14,16 +12,16 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api")
-public class PropietarioController {
+public class OwnerController {
 
     // accedemos a los datos del repositorio
     @Autowired
-    private PropietarioRepository ownerRepository;
+    private OwnerRepository ownerRepository;
 
 
     @GetMapping("/propietario")
-    public ResponseEntity<List<Propietario>> dataAll(@RequestParam(required = false) String owner){
-        List<Propietario> res = new ArrayList<>();
+    public ResponseEntity<List<Owner>> dataAll(@RequestParam(required = false) String owner){
+        List<Owner> res = new ArrayList<>();
         if(owner == null) {
             ownerRepository.findAll().forEach(res::add);
         }else{
@@ -37,8 +35,8 @@ public class PropietarioController {
     }
 
     @GetMapping("/propietario/{id}")
-    public ResponseEntity<Propietario> getOwner(@PathVariable("id") int id){
-       Propietario owner = ownerRepository.findById(id).orElse(null);
+    public ResponseEntity<Owner> getOwner(@PathVariable("id") int id){
+       Owner owner = ownerRepository.findById(id).orElse(null);
 
        if (owner == null){
            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -48,13 +46,13 @@ public class PropietarioController {
     }
     // me da todos los propietarios con sus coches
     @GetMapping("/propietario/coches")
-    public List<Propietario> carsOwners() {
+    public List<Owner> carsOwners() {
         return ownerRepository.findAllWithCars();
     }
 
     @GetMapping("/propietario/coches/{id}")
-    public ResponseEntity<List<Propietario>> getCochesByPropietario(@PathVariable("id") int ownerId) {
-        List<Propietario> owner = ownerRepository.findByCarCarId(ownerId);
+    public ResponseEntity<List<Owner>> getCochesByPropietario(@PathVariable("id") int ownerId) {
+        List<Owner> owner = ownerRepository.findByCarCarId(ownerId);
 
         if (owner.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -62,14 +60,14 @@ public class PropietarioController {
         return new ResponseEntity<>(owner, HttpStatus.OK);
     }
     @PostMapping("/propietario")
-    public ResponseEntity<Propietario> addOwner(@RequestBody Propietario owner){
-        Propietario aux = ownerRepository.save(new Propietario(owner.getName(), owner.getDni(),
+    public ResponseEntity<Owner> addOwner(@RequestBody Owner owner){
+        Owner aux = ownerRepository.save(new Owner(owner.getName(), owner.getDni(),
                 owner.getCity(), owner.getPhone()));
         return new ResponseEntity<>(aux, HttpStatus.CREATED);
     }
     @PutMapping("/propietario/{id}")
-    public ResponseEntity<Propietario> updateOwner(@PathVariable("id") int id, @RequestBody Propietario owner){
-        Propietario own = ownerRepository.findById(id).orElse(null);
+    public ResponseEntity<Owner> updateOwner(@PathVariable("id") int id, @RequestBody Owner owner){
+        Owner own = ownerRepository.findById(id).orElse(null);
         if (own == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }else{

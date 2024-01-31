@@ -5,27 +5,23 @@ import jakarta.persistence.*;
 import java.util.List;
 
 @Entity
-public class Propietario {
+public class Owner {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "propietario_id")
     private int ownerId;
-    @Column(name="nombre")
-    private String name;
 
+    private String name;
     private String dni;
-    @Column(name="ciudad")
     private String city;
-    @Column(name="telefono")
     private String phone;
 
     @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL)
-    private List<Coche> car;
-    public Propietario() {
+    private List<Car> car;
+    public Owner() {
     }
 
-    public Propietario(String name, String dni, String city, String phone) {
+    public Owner(String name, String dni, String city, String phone) {
         this.name = name;
         this.dni = dni;
         this.city = city;
@@ -72,11 +68,11 @@ public class Propietario {
         this.phone = phone;
     }
 
-    public List<Coche> getCar() {
+    public List<Car> getCar() {
         return car;
     }
 
-    public void setCar(List<Coche> car) {
+    public void setCar(List<Car> car) {
         this.car = car;
     }
 

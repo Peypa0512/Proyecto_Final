@@ -8,39 +8,34 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-public class Coche {
+public class Car {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "coche_id", nullable = true)
     private int carId;
 
-    @Column(name="matricula",nullable = false, unique=true)
     private String registration;
-    @Column(name="fecha_matriculacion", nullable = false)
     private Date regDate;
-
-    @Column(name="precio", nullable = false)
     private Double pvp;
 
     @ManyToOne
-    @JoinColumn(name = "propietario_id", nullable = false)
+    @JoinColumn(name = "owner_id", nullable = false)
     @JsonIgnore
-    private Propietario owner;
+    private Owner owner;
 
     @ManyToMany(cascade = {CascadeType.MERGE})
     // Especificamos los datos de la tabla intermedia
     @JoinTable(
-            name = "modelo_coche", // NOmbre
+            name = "model_car", // NOmbre
             joinColumns = {@JoinColumn(name = "carid")}, // MI foreign key
             inverseJoinColumns = {@JoinColumn(name = "modelid")} // Foreign Key de la otra entidad
     )
-    Set<Modelo> model = new HashSet<>();
+    Set<Model> model = new HashSet<>();
 
-    public Coche() {
+    public Car() {
     }
 
-    public Coche(String registration, Date regDate, Double pvp, Propietario owner) {
+    public Car(String registration, Date regDate, Double pvp, Owner owner) {
         this.registration = registration;
         this.regDate = regDate;
         this.pvp = pvp;
@@ -80,21 +75,23 @@ public class Coche {
         this.pvp = pvp;
     }
 
-    public Propietario getOwner() {
+    public Owner getOwner() {
         return owner;
     }
 
-    public void setOwner(Propietario owner) {
+    public void setOwner(Owner owner) {
         this.owner = owner;
     }
 
-    public Set<Modelo> getModel() {
+    public void setModel(Set<Model> model) {
+        this.model = model;
+    }
+
+    public Set<Model> getModel() {
         return model;
     }
 
-    public void setModel(Set<Modelo> model) {
-        this.model = model;
-    }
+
 
     @Override
     public String toString() {

@@ -3,27 +3,24 @@ package com.psr.models;
 import jakarta.persistence.*;
 
 @Entity
-
-public class Modelo {
+public class Model {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "modelo_id")
     private int modelId;
-    @Column(name="modelo")
     private String model;
 
     @ManyToOne
-    @JoinColumn(name = "marca_id", nullable = false)
-    private Marca marca;
+    @JoinColumn(name = "brandId", nullable = false)
+    private Brand brand;
 
-    public Modelo() {
+    public Model() {
     }
 
-    public Modelo(String model, Marca marca) {
+    public Model(String model, Brand brand) {
 
         this.model = model;
-        this.marca = marca;
+        this.brand = brand;
     }
 
     public int getModelId() {
@@ -42,16 +39,16 @@ public class Modelo {
         this.model = model;
     }
 
-    public Marca getMarca() {
-        return marca;
+    public Brand getBrand() {
+        return brand;
     }
 
-    public void setMarca(Marca marca) {
-        this.marca = marca;
+    public void setBrand(Brand brand) {
+        this.brand = brand;
     }
 
     @Override
     public String toString() {
-        return "Modelo [modelId=" + modelId +", model=" + model + "marca= " + marca + "]";
+        return "Model [modelId=" + modelId +", model=" + model + "brand= " + brand + "]";
     }
 }

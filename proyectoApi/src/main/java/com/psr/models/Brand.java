@@ -3,22 +3,18 @@ package com.psr.models;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "marca")
-public class Marca {
+public class Brand {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "marca_id")
     private int brandId;
-    @Column(name="nombre", nullable = false)
     private String name;
 
-    public Marca() {
+    public Brand() {
 
     }
 
-    public Marca(String name) {
-
+    public Brand(String name) {
         this.name = name;
     }
 

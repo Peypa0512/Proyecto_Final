@@ -17,13 +17,13 @@ public class Pack {
     private String carFinish;
 
     @ManyToOne
-    @JoinColumn(name = "coche_id", nullable = false)
-    private Coche car;
+    @JoinColumn(name = "carId", nullable = false)
+    private Car car;
 
     public Pack() {
     }
 
-    public Pack(String color, String finish, String engine, int cv, String carFinish, Coche car) {
+    public Pack(String color, String finish, String engine, int cv, String carFinish, Car car) {
         this.color = color;
         this.finish = finish;
         this.engine = engine;
@@ -80,11 +80,11 @@ public class Pack {
         this.carFinish = carFinish;
     }
 
-    public Coche getCar() {
+    public Car getCar() {
         return car;
     }
 
-    public void setCar(Coche car) {
+    public void setCar(Car car) {
         this.car = car;
     }
 

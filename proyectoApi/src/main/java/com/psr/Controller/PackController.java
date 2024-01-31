@@ -1,27 +1,26 @@
 package com.psr.Controller;
 
-import com.psr.models.Coche;
+import com.psr.models.Car;
 import com.psr.models.Pack;
-import com.psr.repository.CocheRepository;
+import com.psr.repository.CarRepository;
 import com.psr.repository.PackRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
-@Controller
-@RequestMapping("/api")
+@RestController
+@RequestMapping(path="/api")
 public class PackController {
 
     @Autowired
     PackRepository packRepository;
 
     @Autowired
-   CocheRepository carRepository;
+    CarRepository carRepository;
 
 
     @GetMapping("/pack")
@@ -60,7 +59,7 @@ public class PackController {
 
     @PostMapping("/coche/{id}/pack")
     public ResponseEntity<Pack> addPack(@PathVariable("id") int id, @RequestBody Pack pack){
-        Coche car = carRepository.findById(id).orElse(null);
+        Car car = carRepository.findById(id).orElse(null);
         if(car == null){
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
@@ -85,7 +84,7 @@ public class PackController {
         aux.setCarFinish(pack.getCarFinish());
 
         if (pack.getCarFinish() != null && pack.getCar() != null){
-            Coche car = carRepository.findById(pack.getCar().getCarId()).orElse(null);
+            Car car = carRepository.findById(pack.getCar().getCarId()).orElse(null);
             if (car == null){
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
             }
