@@ -10,13 +10,14 @@ import com.psr.repository.PropietarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
-@RestController
-@RequestMapping(path="/api")
+@Controller
+@RequestMapping("/api")
 public class CocheController {
 
     // accedemos a los datos del repositorio
@@ -131,7 +132,7 @@ public class CocheController {
         return new ResponseEntity<>(aux, HttpStatus.OK);
     }
     @DeleteMapping("/coche/{id}")
-    public ResponseEntity<HttpStatus> deleteCar(@PathVariable("int") int id) {
+    public ResponseEntity<HttpStatus> deleteCar(@PathVariable("id") int id) {
 
         carRepository.deleteById(id);
         return new ResponseEntity<>(HttpStatus.OK);
@@ -161,12 +162,6 @@ public class CocheController {
         car.getModel().remove(own);
 
         return new ResponseEntity<>(carRepository.save(car), HttpStatus.OK);
-    }
-
-    @DeleteMapping("/coche/{idcar}")
-    public ResponseEntity<HttpStatus> deleteCars(@PathVariable("idcar") int id) {
-        carRepository.deleteById(id);
-        return new ResponseEntity<>(HttpStatus.OK);
     }
 
 
