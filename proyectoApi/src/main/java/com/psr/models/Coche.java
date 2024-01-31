@@ -1,5 +1,6 @@
 package com.psr.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.util.Date;
@@ -44,6 +45,7 @@ public class Coche {
         this.pvp = pvp;
         this.owner = owner;
     }
+
 
     public int getCarId() {
         return carId;

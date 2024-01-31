@@ -27,11 +27,9 @@ CREATE TABLE IF NOT EXISTS coche (
     matricula VARCHAR(15),
     fecha_matriculacion DATE,
     precio DECIMAL(10, 2),
-    modelo_id INT, -- quitar
-    marca_id INT, -- quitar
+    modelo_id INT,     
     propietario_id INT,
-    FOREIGN KEY (modelo_id) REFERENCES modelo(modelo_id), -- quitar
-    FOREIGN KEY (marca_id) REFERENCES marca(marca_id), -- quitar
+    FOREIGN KEY (modelo_id) REFERENCES modelo(modelo_id), -- quitar    
     FOREIGN KEY (propietario_id) REFERENCES propietario(propietario_id)
 );
 
@@ -56,15 +54,16 @@ CREATE TABLE `proyecto_accenture`.`modelo_coche` (
 CREATE TABLE `proyecto_accenture`.`pack` (
   `idpack` INT NOT NULL AUTO_INCREMENT,
   `color` VARCHAR(45) NOT NULL,
+  `finish` VARCHAR(45) NOT NULL,
   `engine` VARCHAR(45) NOT NULL,
   `cv` INT NOT NULL,
   `car_finish` VARCHAR(45) NOT NULL,
-  `model` INT NOT NULL,
+  `coche_id` INT NOT NULL,
   PRIMARY KEY (`idpack`),
-  INDEX `model_idx` (`model` ASC) ,
-  CONSTRAINT `model`
-    FOREIGN KEY (`model`)
-    REFERENCES `proyecto_accenture`.`modelo` (`modelo_id`)
+  INDEX `cocheId_idx` (`coche_id` ASC) ,
+  CONSTRAINT `cocheId`
+    FOREIGN KEY (`coche_id`)
+    REFERENCES `proyecto_accenture`.`coche` (`coche_id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION);
 
@@ -129,15 +128,16 @@ VALUES
     (1, 10),
     (2, 9);
 
-INSERT INTO pack (color, engine, cv, car_finish, model) 
+INSERT INTO pack (color, finish, engine, cv, car_finish, coche_id) 
 VALUES 
- ('Rojo', 'Gasolina', 150, 'Sport', 1),
- ('Azul', 'Diesel', 120, 'Deluxe', 3),
- ('Blanco', 'Híbrido', 180, 'Avanzado', 2),
- ('Negro', 'Eléctrico', 200, 'Basic', 4),
- ('Plata', 'Gasolina', 130, 'Sport', 6),
- ('Gris', 'Diesel', 110, 'Deluxe', 6),
- ('Verde', 'Híbrido', 170, 'Avanzado', 1),
- ('Amarillo', 'Eléctrico', 190, 'Basic', 4),
- ('Naranja', 'Gasolina', 140, 'Sport', 5),
- ('Azul Marino', 'Diesel', 125, 'Deluxe', 5);
+ ('Rojo', 'Mate, 'Gasolina', 150, 'Sport', 1),
+ ('Azul', ''Metalizado', Diesel', 120, 'Deluxe', 3),
+ ('Blanco', 'Perla', 'Híbrido', 180, 'Avanzado', 2),
+ ('Negro', 'Mate', 'Eléctrico', 200, 'Basic', 4),
+ ('Gris', 'Plata', 'Gasolina', 130, 'Sport', 8),
+ ('Gris', 'Oscuro', 'Diesel', 110, 'Deluxe', 9),
+ ('Verde', 'Metalizado'. 'Híbrido', 170, 'Avanzado', 1),
+ ('Amarillo', 'Mate',  'Eléctrico', 190, 'Basic', 4),
+ ('Naranja', 'Metalizado', 'Gasolina', 140, 'Sport', 5),
+ ('Azul Marino', 'Metalizado', 'Diesel', 125, 'Deluxe', 5),
+('Azul Cielo', 'Metalizado', 'Diesel', 180, 'Deluxe', 10);

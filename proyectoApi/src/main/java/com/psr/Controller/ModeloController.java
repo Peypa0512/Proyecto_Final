@@ -7,13 +7,14 @@ import com.psr.repository.ModeloRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
-@RestController
-@RequestMapping(path="/api")
+@Controller
+@RequestMapping("/api")
 public class ModeloController {
 
     // accedemos a los datos del repositorio
@@ -46,7 +47,26 @@ public class ModeloController {
             return new ResponseEntity<>(model, HttpStatus.OK);
         }
     }
-    //Hasta aqui-> falta probarlo
+    @GetMapping("/marca/modelos")
+    public ResponseEntity<List<Modelo>> getAllBrand(){
+        List<Modelo> res = new ArrayList<>();
+        modeloRepository.findAllORDERByMarcaName().forEach(res::add);
+        if(res.isEmpty()){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(res, HttpStatus.OK);
+
+    }
+    @GetMapping("/marca/{id}/modelo")
+    public ResponseEntity<List<Modelo>> getAllByCountry(@PathVariable("id") int id) {
+        List<Modelo> res = new ArrayList<>();
+        modeloRepository.findByMarcaBrandId(id).forEach(res::add);
+        if (res.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(res, HttpStatus.OK);
+    }
+
     @PostMapping("/marca/{id}/modelo")
     public ResponseEntity<Modelo> addModel(@PathVariable("id") int id, @RequestBody Modelo modelo) {
 
@@ -74,7 +94,6 @@ public class ModeloController {
                 }
             }
             return new ResponseEntity<>(modeloRepository.save(aux), HttpStatus.OK);
-
     }
 
     @DeleteMapping("/modelo/{id}")

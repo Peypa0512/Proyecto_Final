@@ -44,6 +44,7 @@ public class PropietarioController {
        return new ResponseEntity<>(owner, HttpStatus.OK);
 
     }
+    // me da todos los propietarios con sus coches
 
     @PostMapping("/propietario")
     public ResponseEntity<Propietario> addOwner(@RequestBody Propietario owner){

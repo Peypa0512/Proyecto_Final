@@ -1,5 +1,6 @@
 package com.psr.models;
 
+
 import jakarta.persistence.*;
 
 @Entity
@@ -8,6 +9,7 @@ public class Pack {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int idpack;
     private String color;
+    private String finish;
     private String engine;
     private int cv;
 
@@ -15,19 +17,19 @@ public class Pack {
     private String carFinish;
 
     @ManyToOne
-    @JoinColumn(name = "modelo_id", nullable = false)
-    private Modelo model;
+    @JoinColumn(name = "coche_id", nullable = false)
+    private Coche car;
 
     public Pack() {
     }
 
-    public Pack(int idpack, String color, String engine, int cv, String carFinish, Modelo model) {
-        this.idpack = idpack;
+    public Pack(String color, String finish, String engine, int cv, String carFinish, Coche car) {
         this.color = color;
+        this.finish = finish;
         this.engine = engine;
         this.cv = cv;
         this.carFinish = carFinish;
-        this.model = model;
+        this.car = car;
     }
 
     public int getIdpack() {
@@ -44,6 +46,14 @@ public class Pack {
 
     public void setColor(String color) {
         this.color = color;
+    }
+
+    public String getFinish() {
+        return finish;
+    }
+
+    public void setFinish(String finish) {
+        this.finish = finish;
     }
 
     public String getEngine() {
@@ -70,12 +80,12 @@ public class Pack {
         this.carFinish = carFinish;
     }
 
-    public Modelo getModel() {
-        return model;
+    public Coche getCar() {
+        return car;
     }
 
-    public void setModel(Modelo model) {
-        this.model = model;
+    public void setCar(Coche car) {
+        this.car = car;
     }
 
     @Override
@@ -83,10 +93,11 @@ public class Pack {
         return "Pack{" +
                 "idpack=" + idpack +
                 ", color='" + color + '\'' +
+                ", finish='" + finish + '\'' +
                 ", engine='" + engine + '\'' +
                 ", cv=" + cv +
                 ", carFinish='" + carFinish + '\'' +
-                ", model=" + model.getModel() +
+                ", car=" + car.getRegistration() +
                 '}';
     }
 }
