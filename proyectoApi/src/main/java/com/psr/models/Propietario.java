@@ -2,6 +2,8 @@ package com.psr.models;
 
 import jakarta.persistence.*;
 
+import java.util.List;
+
 @Entity
 public class Propietario {
 
@@ -18,6 +20,8 @@ public class Propietario {
     @Column(name="telefono")
     private String phone;
 
+    @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL)
+    private List<Coche> car;
     public Propietario() {
     }
 
@@ -68,6 +72,14 @@ public class Propietario {
         this.phone = phone;
     }
 
+    public List<Coche> getCar() {
+        return car;
+    }
+
+    public void setCar(List<Coche> car) {
+        this.car = car;
+    }
+
     @Override
     public String toString() {
         return "Propietario{" +
@@ -76,6 +88,7 @@ public class Propietario {
                 ", dni='" + dni + '\'' +
                 ", city='" + city + '\'' +
                 ", phone='" + phone + '\'' +
+                ", car=" + car +
                 '}';
     }
 }

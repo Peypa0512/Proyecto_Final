@@ -25,6 +25,7 @@ public class Coche {
 
     @ManyToOne
     @JoinColumn(name = "propietario_id", nullable = false)
+    @JsonIgnore
     private Propietario owner;
 
     @ManyToMany(cascade = {CascadeType.MERGE})

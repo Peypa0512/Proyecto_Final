@@ -1,5 +1,6 @@
 package com.psr.Controller;
 
+import com.psr.models.Coche;
 import com.psr.models.Propietario;
 import com.psr.repository.PropietarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.List;
 
-@Controller
+@RestController
 @RequestMapping("/api")
 public class PropietarioController {
 
@@ -46,7 +47,20 @@ public class PropietarioController {
 
     }
     // me da todos los propietarios con sus coches
+    @GetMapping("/propietario/coches")
+    public List<Propietario> carsOwners() {
+        return ownerRepository.findAllWithCars();
+    }
 
+    @GetMapping("/propietario/coches/{id}")
+    public ResponseEntity<List<Propietario>> getCochesByPropietario(@PathVariable("id") int ownerId) {
+        List<Propietario> owner = ownerRepository.findByCarCarId(ownerId);
+
+        if (owner.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(owner, HttpStatus.OK);
+    }
     @PostMapping("/propietario")
     public ResponseEntity<Propietario> addOwner(@RequestBody Propietario owner){
         Propietario aux = ownerRepository.save(new Propietario(owner.getName(), owner.getDni(),
