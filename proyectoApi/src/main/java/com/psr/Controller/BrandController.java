@@ -20,7 +20,7 @@ public class BrandController {
     @Autowired
     private BrandRepository brandRepository;
 
-    @GetMapping("/Brand")
+    @GetMapping("/marca")
     public ResponseEntity<List<Brand>> getAll(@RequestParam(required = false) String brand){
         List<Brand> res = new ArrayList<>();
         if (brand == null){
@@ -35,7 +35,7 @@ public class BrandController {
 
     }
 
-    @GetMapping("/Brand/{id}")
+    @GetMapping("/marca/{id}")
     public ResponseEntity<Brand> getModel(@PathVariable("id") int id) {
         Brand brand = brandRepository.findById(id)
                 .orElse(null);
@@ -47,13 +47,13 @@ public class BrandController {
         }
     }
 
-    @PostMapping("/Brand")
+    @PostMapping("/marca")
     public ResponseEntity<Brand> addBrand(@RequestBody Brand brand){
         Brand aux = brandRepository.save(new Brand(brand.getName()));
         return new ResponseEntity<>(aux, HttpStatus.CREATED);
     }
 
-    @PutMapping("/Brand/{id}")
+    @PutMapping("/marca/{id}")
     public ResponseEntity<Brand> updateBrand(@PathVariable("id") int id, @RequestBody Brand brand){
 
         Brand aux = brandRepository.findById(id).orElse(null);
@@ -66,7 +66,7 @@ public class BrandController {
 
     }
 
-    @DeleteMapping("/Brand/{id}")
+    @DeleteMapping("/marca/{id}")
     public ResponseEntity<HttpStatus> deleteBrand(@PathVariable("id") int id) {
         brandRepository.deleteById(id);
         return new ResponseEntity<>(HttpStatus.OK);

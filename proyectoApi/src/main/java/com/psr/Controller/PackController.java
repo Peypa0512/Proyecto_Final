@@ -49,7 +49,7 @@ public class PackController {
 
         List<Pack> res = new ArrayList<>();
 
-        packRepository.findByCarCarId(id).forEach(res::add);
+        packRepository.findByCarIdCar(id).forEach(res::add);
 
         if(res.isEmpty()){
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -67,7 +67,7 @@ public class PackController {
                 pack.getCarFinish(), car);
         return new ResponseEntity<>(packRepository.save(temp), HttpStatus.OK);
     }
- // preguntar
+
     @PutMapping("pack/{id}")
     public ResponseEntity<Pack> updatePack(@PathVariable("id") int id, @RequestBody Pack pack){
         Pack aux = packRepository.findById(id).orElse(null);
@@ -84,7 +84,7 @@ public class PackController {
         aux.setCarFinish(pack.getCarFinish());
 
         if (pack.getCarFinish() != null && pack.getCar() != null){
-            Car car = carRepository.findById(pack.getCar().getCarId()).orElse(null);
+            Car car = carRepository.findById(pack.getCar().getIdCar()).orElse(null);
             if (car == null){
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
             }

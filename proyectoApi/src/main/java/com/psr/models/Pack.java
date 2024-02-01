@@ -7,7 +7,8 @@ import jakarta.persistence.*;
 public class Pack {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int idpack;
+    @Column(name="idpack")
+    private int idPack;
     private String color;
     private String finish;
     private String engine;
@@ -17,7 +18,7 @@ public class Pack {
     private String carFinish;
 
     @ManyToOne
-    @JoinColumn(name = "carId", nullable = false)
+    @JoinColumn(name = "idcar", nullable = false)
     private Car car;
 
     public Pack() {
@@ -32,12 +33,12 @@ public class Pack {
         this.car = car;
     }
 
-    public int getIdpack() {
-        return idpack;
+    public int getIdPack() {
+        return idPack;
     }
 
-    public void setIdpack(int idpack) {
-        this.idpack = idpack;
+    public void setIdPack(int idPack) {
+        this.idPack = idPack;
     }
 
     public String getColor() {
@@ -91,7 +92,7 @@ public class Pack {
     @Override
     public String toString() {
         return "Pack{" +
-                "idpack=" + idpack +
+                "idPack=" + idPack +
                 ", color='" + color + '\'' +
                 ", finish='" + finish + '\'' +
                 ", engine='" + engine + '\'' +

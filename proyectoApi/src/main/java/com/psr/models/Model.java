@@ -7,11 +7,12 @@ public class Model {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int modelId;
+    @Column(name="idmodel") // id de la tabla
+    private int idModel;
     private String model;
 
     @ManyToOne
-    @JoinColumn(name = "brandId", nullable = false)
+    @JoinColumn(name = "idbrand", nullable = false)
     private Brand brand;
 
     public Model() {
@@ -23,12 +24,12 @@ public class Model {
         this.brand = brand;
     }
 
-    public int getModelId() {
-        return modelId;
+    public int getIdModel() {
+        return idModel;
     }
 
-    public void setModelId(int modelId) {
-        this.modelId = modelId;
+    public void setIdModel(int idModel) {
+        this.idModel = idModel;
     }
 
     public String getModel() {
@@ -49,6 +50,6 @@ public class Model {
 
     @Override
     public String toString() {
-        return "Model [modelId=" + modelId +", model=" + model + "brand= " + brand + "]";
+        return "Model [idModel=" + idModel +", model=" + model + "brand= " + brand + "]";
     }
 }

@@ -61,7 +61,7 @@ public class CarController {
 
     @GetMapping("/coche/modelo/{id}")
     public ResponseEntity<List<Car>> getModelCarById(@PathVariable("id") int id) {
-        List<Car>car = carRepository.findByModelModelId(id);
+        List<Car>car = carRepository.findByModelIdModel(id);
 
         if (car.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -71,15 +71,15 @@ public class CarController {
     }
 
 
-    @PostMapping("/Propietario/{id}/coche")
+    @PostMapping("/propietario/{id}/coche")
     public ResponseEntity<Car> addCoche(@PathVariable("id") int id, @RequestBody Car car) {
         Owner newOwn = ownerRepository.findById(id).orElse(null);
         if (newOwn == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
 
-        Car newCar = new Car(car.getRegistration(), car.getRegDate(), car.getPvp(), newOwn);
-        return new ResponseEntity<>(newCar, HttpStatus.CREATED);
+        Car newCar = new Car(car.getRegistration(), car.getRegdate(), car.getPvp(), newOwn);
+        return new ResponseEntity<>(carRepository.save(newCar), HttpStatus.CREATED);
     }
 
     @PostMapping("/coche/{idcar}/modelo/{idmodel}")
@@ -93,6 +93,7 @@ public class CarController {
         }
         car.getModel().add(model);
 
+
         return new ResponseEntity<>(carRepository.save(car), HttpStatus.CREATED);
     }
 
@@ -105,10 +106,10 @@ public class CarController {
         }
         aux.setOwner(car.getOwner());
         aux.setRegistration(car.getRegistration());
-        aux.setRegDate(car.getRegDate());
+        aux.setRegdate(car.getRegdate());
         aux.setPvp(car.getPvp());
         if(car.getRegistration() != null) {
-            Owner owners = ownerRepository.findById(car.getOwner().getOwnerId()).orElse(null);
+            Owner owners = ownerRepository.findById(car.getOwner().getIdOwner()).orElse(null);
             if (owners != null) {
                 aux.setOwner(owners);
             }

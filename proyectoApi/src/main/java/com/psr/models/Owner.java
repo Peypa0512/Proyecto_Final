@@ -9,8 +9,8 @@ public class Owner {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int ownerId;
-
+    @Column(name="idowner") // id de la tabla
+    private int idOwner;
     private String name;
     private String dni;
     private String city;
@@ -18,6 +18,7 @@ public class Owner {
 
     @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL)
     private List<Car> car;
+
     public Owner() {
     }
 
@@ -28,12 +29,12 @@ public class Owner {
         this.phone = phone;
     }
 
-    public int getOwnerId() {
-        return ownerId;
+    public int getIdOwner() {
+        return idOwner;
     }
 
-    public void setOwnerId(int ownerId) {
-        this.ownerId = ownerId;
+    public void setIdOwner(int idOwner) {
+        this.idOwner = idOwner;
     }
 
     public String getName() {
@@ -79,7 +80,7 @@ public class Owner {
     @Override
     public String toString() {
         return "Propietario{" +
-                "ownerId=" + ownerId +
+                "idowner=" + idOwner +
                 ", name='" + name + '\'' +
                 ", dni='" + dni + '\'' +
                 ", city='" + city + '\'' +

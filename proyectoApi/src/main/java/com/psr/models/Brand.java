@@ -7,7 +7,8 @@ public class Brand {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int brandId;
+    @Column(name="idbrand")
+    private int idBrand;
     private String name;
 
     public Brand() {
@@ -18,12 +19,12 @@ public class Brand {
         this.name = name;
     }
 
-    public int getBrandId() {
-        return brandId;
+    public int getIdBrand() {
+        return idBrand;
     }
 
-    public void setBrandId(int brandId) {
-        this.brandId = brandId;
+    public void setIdBrand(int idBrand) {
+        this.idBrand = idBrand;
     }
 
     public String getName() {
@@ -36,6 +37,6 @@ public class Brand {
 
     @Override
     public String toString() {
-        return "brand [brandId=" + brandId + ", name=" + name + "]";
+        return "brand [idBrand=" + idBrand + ", name=" + name + "]";
     }
 }

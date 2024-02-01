@@ -27,10 +27,8 @@ public class OwnerController {
         }else{
             ownerRepository.findByNameContaining(owner).forEach(res::add);
         }
-
         if (res.isEmpty()){
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);        }
         return new ResponseEntity<>(res, HttpStatus.OK);
     }
 
@@ -52,7 +50,7 @@ public class OwnerController {
 
     @GetMapping("/propietario/coches/{id}")
     public ResponseEntity<List<Owner>> getCochesByPropietario(@PathVariable("id") int ownerId) {
-        List<Owner> owner = ownerRepository.findByCarCarId(ownerId);
+        List<Owner> owner = ownerRepository.findByCarIdCar(ownerId);
 
         if (owner.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);

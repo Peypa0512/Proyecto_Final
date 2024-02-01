@@ -12,43 +12,44 @@ public class Car {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int carId;
+    @Column(name="idcar")
+    private int idCar;
 
     private String registration;
-    private Date regDate;
+    private Date regdate;
     private Double pvp;
 
     @ManyToOne
-    @JoinColumn(name = "owner_id", nullable = false)
+    @JoinColumn(name = "idowner", nullable = false)
     @JsonIgnore
     private Owner owner;
 
     @ManyToMany(cascade = {CascadeType.MERGE})
     // Especificamos los datos de la tabla intermedia
     @JoinTable(
-            name = "model_car", // NOmbre
-            joinColumns = {@JoinColumn(name = "carid")}, // MI foreign key
-            inverseJoinColumns = {@JoinColumn(name = "modelid")} // Foreign Key de la otra entidad
+            name = "modelcar", // Nombre
+            joinColumns = {@JoinColumn(name = "idcar")}, // MI foreign key
+            inverseJoinColumns = {@JoinColumn(name = "idmodel")} // Foreign Key de la otra entidad
     )
     Set<Model> model = new HashSet<>();
 
     public Car() {
     }
 
-    public Car(String registration, Date regDate, Double pvp, Owner owner) {
+    public Car(String registration, Date regdate, Double pvp, Owner owner) {
         this.registration = registration;
-        this.regDate = regDate;
+        this.regdate = regdate;
         this.pvp = pvp;
         this.owner = owner;
     }
 
 
-    public int getCarId() {
-        return carId;
+    public int getIdCar() {
+        return idCar;
     }
 
-    public void setCarId(int carId) {
-        this.carId = carId;
+    public void setIdCar(int idCar) {
+        this.idCar = idCar;
     }
 
     public String getRegistration() {
@@ -59,12 +60,12 @@ public class Car {
         this.registration = registration;
     }
 
-    public Date getRegDate() {
-        return regDate;
+    public Date getRegdate() {
+        return regdate;
     }
 
-    public void setRegDate(Date regDate) {
-        this.regDate = regDate;
+    public void setRegdate(Date regdate) {
+        this.regdate = regdate;
     }
 
     public Double getPvp() {
@@ -96,9 +97,9 @@ public class Car {
     @Override
     public String toString() {
         return "Coche{" +
-                "carId=" + carId +
+                "idCar=" + idCar +
                 ", registration='" + registration + '\'' +
-                ", regDate=" + regDate +
+                ", regDate=" + regdate +
                 ", pvp=" + pvp +
                 ", owner=" + owner +
                 ", model=" + model +

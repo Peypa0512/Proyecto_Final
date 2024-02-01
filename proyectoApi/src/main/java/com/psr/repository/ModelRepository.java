@@ -10,10 +10,10 @@ import java.util.List;
 
 public interface ModelRepository extends JpaRepository<Model,  Integer> {
 
-   List<Model> findByMarcaBrandId(int id);
+   List<Model> findByBrandIdBrand(int id);
 
-   @Query("SELECT m FROM Modelo m JOIN FETCH m.marca ORDER BY m.marca.name ASC")
-   List<Model> findAllORDERByMarcaName();
+   @Query("SELECT m FROM Model m JOIN FETCH m.brand ORDER BY m.brand.name ASC")
+   List<Model> findAllORDERByBrandName();
 
 
 }

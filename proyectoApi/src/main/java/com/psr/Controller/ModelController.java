@@ -38,7 +38,7 @@ public class ModelController {
 
 
     @GetMapping("/modelo/{id}")
-    public ResponseEntity<Model> getModel(@PathVariable("int") int id) {
+    public ResponseEntity<Model> getModel(@PathVariable("id") int id) {
         Model model = modelRepository.findById(id).orElse(null);
         if (model == null){
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -49,7 +49,7 @@ public class ModelController {
     @GetMapping("/marca/modelos")
     public ResponseEntity<List<Model>> getAllBrand(){
         List<Model> res = new ArrayList<>();
-        modelRepository.findAllORDERByMarcaName().forEach(res::add);
+        modelRepository.findAllORDERByBrandName().forEach(res::add);
         if(res.isEmpty()){
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
@@ -59,7 +59,7 @@ public class ModelController {
     @GetMapping("/marca/{id}/modelo")
     public ResponseEntity<List<Model>> getAllByCountry(@PathVariable("id") int id) {
         List<Model> res = new ArrayList<>();
-        modelRepository.findByMarcaBrandId(id).forEach(res::add);
+        modelRepository.findByBrandIdBrand(id).forEach(res::add);
         if (res.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
@@ -69,7 +69,7 @@ public class ModelController {
     @PostMapping("/marca/{id}/modelo")
     public ResponseEntity<Model> addModel(@PathVariable("id") int id, @RequestBody Model model) {
 
-        Brand brands = brandRepository.findById(model.getBrand().getBrandId()).orElse(null);
+        Brand brands = brandRepository.findById(model.getBrand().getIdBrand()).orElse(null);
         if (brands == null){
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
@@ -87,7 +87,7 @@ public class ModelController {
         }
         aux.setModel(model.getModel());
         if(model.getBrand() != null){
-            Brand brands = brandRepository.findById(model.getBrand().getBrandId()).orElse(null);
+            Brand brands = brandRepository.findById(model.getBrand().getIdBrand()).orElse(null);
             if(brands != null){
                 aux.setBrand(brands);
             }
@@ -96,7 +96,7 @@ public class ModelController {
     }
 
     @DeleteMapping("/modelo/{id}")
-    public ResponseEntity<HttpStatus> deleteModel(@PathVariable("int") int id) {
+    public ResponseEntity<HttpStatus> deleteModel(@PathVariable("id") int id) {
         modelRepository.deleteById(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }
