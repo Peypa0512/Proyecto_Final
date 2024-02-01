@@ -1,74 +1,81 @@
-CREATE DATABASE IF NOT EXISTS proyecto_Accenture;
+CREATE DATABASE IF NOT EXISTS apiRest;
 
-USE proyecto_Accenture;
+USE apiRest;
 
 CREATE TABLE IF NOT EXISTS owner (
-    owner_id INT PRIMARY KEY AUTO_INCREMENT,
+    idowner INT PRIMARY KEY AUTO_INCREMENT,
     Name VARCHAR(255),
     Dni VARCHAR(15),
     City VARCHAR(255),
     phone VARCHAR(15)
-);
+    );
+    
 
 CREATE TABLE IF NOT EXISTS brand (
-    brand_id INT PRIMARY KEY AUTO_INCREMENT,
-    name VARCHAR(25)
-);
+    idbrand INT PRIMARY KEY AUTO_INCREMENT,
+    name VARCHAR(25)    
+    );
 
 CREATE TABLE IF NOT EXISTS model (
-    model_id INT PRIMARY KEY AUTO_INCREMENT,
+    idmodel INT PRIMARY KEY AUTO_INCREMENT,
     model VARCHAR(25),
-    brand_id INT,
-    FOREIGN KEY (brand_id) REFERENCES brand(brand_id)
-);
+    idbrand INT,
+    FOREIGN KEY (idbrand) REFERENCES brand(idbrand));
 
 CREATE TABLE IF NOT EXISTS car (
-    car_id INT PRIMARY KEY AUTO_INCREMENT,
-    registration VARCHAR(15),
-    regDate DATE,
-    pvp DECIMAL(10, 2),
-    model_id INT,     
-    owner_id INT,
-    FOREIGN KEY (model_id) REFERENCES model(modelo_id),     
-    FOREIGN KEY (owner_id) REFERENCES owner(owner_id)
-);
+  `idcar` INT NOT NULL AUTO_INCREMENT,
+  `registration` VARCHAR(15) NOT NULL,
+  `regDate` DATE NOT NULL,
+  `pvp` DOUBLE NOT NULL,
+  `idmodel` INT,
+  `idowner` INT NOT NULL,
+  PRIMARY KEY (`idcar`),
+  UNIQUE INDEX `registration_UNIQUE` (`registration` ASC) ,
+  INDEX `idmodel_idx` (`idmodel` ASC) ,
+  INDEX `idowner_idx` (`idowner` ASC) ,
+  CONSTRAINT `idmodel`
+    FOREIGN KEY (`idmodel`)
+    REFERENCES model (`idmodel`),
+  CONSTRAINT `idowner`
+    FOREIGN KEY (`idowner`)
+    REFERENCES owner (`idowner`)
+   );
 
-CREATE TABLE `proyecto_accenture`.`model_car` (
-  `idmodelo_coche` INT NOT NULL AUTO_INCREMENT,
-  `modelId` INT NOT NULL,
-  `carId` INT NOT NULL,
-  PRIMARY KEY (`idmodel_car`),
-  INDEX `modelId_idx` (`modelId` ASC) ,
-  INDEX `carId_idx` (`carId` ASC) ,
-  CONSTRAINT `modelId`
-    FOREIGN KEY (`modelId`)
-    REFERENCES `proyecto_accenture`.`model` (`model_id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `carId`
-    FOREIGN KEY (`carId`)
-    REFERENCES `proyecto_accenture`.`car` (`car_id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION);
 
-CREATE TABLE `proyecto_accenture`.`pack` (
+CREATE TABLE IF NOT EXISTS modelcar (
+  `idmodelcar` INT NOT NULL AUTO_INCREMENT,
+  `idcar` INT NOT NULL,
+  `idmodel` INT NOT NULL,
+  PRIMARY KEY (`idmodelcar`),
+  INDEX `idcar_idx` (`idcar` ASC) ,
+  INDEX `idemodel_idx` (`idmodel` ASC),
+  CONSTRAINT `idcar`
+    FOREIGN KEY (`idcar`)
+    REFERENCES car (`idcar`)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
+  CONSTRAINT `idemodel`
+    FOREIGN KEY (`idmodel`)
+    REFERENCES model (`idmodel`)
+    );
+
+CREATE TABLE IF NOT EXISTS pack (
   `idpack` INT NOT NULL AUTO_INCREMENT,
   `color` VARCHAR(45) NOT NULL,
   `finish` VARCHAR(45) NOT NULL,
   `engine` VARCHAR(45) NOT NULL,
   `cv` INT NOT NULL,
   `car_finish` VARCHAR(45) NOT NULL,
-  `coche_id` INT NOT NULL,
+  idcar INT NOT NULL,
   PRIMARY KEY (`idpack`),
-  INDEX `cocheId_idx` (`car_id` ASC) ,
+  INDEX `cocheId_idx` (`idcar` ASC) ,
   CONSTRAINT `carId`
-    FOREIGN KEY (`car_id`)
-    REFERENCES `proyecto_accenture`.`car` (`car_id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION);
+    FOREIGN KEY (`idcar`)
+    REFERENCES car (`idcar`)
+    );
 
 
-INSERT INTO owner (owner, Dni, City, phone)
+INSERT INTO owner (Name, Dni, City, phone)
 VALUES
     ('Juan Pérez', '123456789A', 'Ciudad A', '123-456-7890'),
     ('María Rodríguez', '987654321B', 'Ciudad B', '987-654-3210'),    
@@ -91,7 +98,8 @@ VALUES
     ('Mercedes');
 
 
-INSERT INTO Model (model, brand_id)
+
+INSERT INTO Model (model, idbrand)
 VALUES
     ('Corolla', 1), 	-- El 1 corresponde al ID de Toyota
     ('Focus', 2),   	-- El 2 corresponde al ID de Ford   
@@ -102,7 +110,7 @@ VALUES
 
 
 
-INSERT INTO Car (registration, regData, pvp, model_id, owner_id)
+INSERT INTO Car (registration, regDate, pvp, idmodel, idowner)
 VALUES
     ('1234ABC', '2023-01-15', 20000.00, 1, 4), 	-- Modelo: Corolla, Marca: Toyota
     ('7890XYZ', '2022-12-10', 18000.50, 2, 6),	-- Modelo: Focus, Marca: Ford    
@@ -110,12 +118,12 @@ VALUES
     ('7891JKL', '2022-11-05', 21500.00, 4, 9), 	-- Modelo: Camry, Marca: Toyota
     ('1231PQR', '2023-03-25', 19500.75, 5, 5), 	-- Modelo: Escape, Marca: Ford
     ('4560XYZ', '2022-10-15', 23000.50, 6, 2), 	-- Modelo: Accord, Marca: Honda
-    ('3344GMX', '2022-12-03', 19500.00, 4, 8), 	-- Modelo: Ibiza, Marca: Seat
+    ('3344GMX', '2022-12-03', 19500, 4, 8), 	-- Modelo: Ibiza, Marca: Seat
     ('8866GHX', '2023-01-01', 18950.99, 6, 3),  -- Modelo: I3, Marca: BMW
     ('8899HXM', '2023-01-01', 29999.99, 5, 7),  -- Modelo: A180, Marca: Mercedes
     ('3358JZD',	'2020-01-14', 15000.00,	3, 3);  -- Modelo: Civid, Marca:Toyota
 
-INSERT INTO Model_car (modelId, carId)
+INSERT INTO Modelcar (idmodel, idcar)
 VALUES
     (1, 1), 	-- El 1 corresponde al ID de Toyota
     (2, 2),   	-- El 2 corresponde al ID de Ford   
@@ -128,15 +136,15 @@ VALUES
     (1, 10),
     (2, 9);
 
-INSERT INTO pack (color, finish, engine, cv, car_finish, car_id) 
+INSERT INTO pack (color, finish, engine, cv, car_finish, idcar) 
 VALUES 
- ('Rojo', 'Mate, 'Gasolina', 150, 'Sport', 1),
- ('Azul', ''Metalizado', Diesel', 120, 'Deluxe', 3),
+ ('Rojo', 'Mate', 'Gasolina', 150, 'Sport', 1),
+ ('Azul', 'Metalizado', 'Diesel', 120, 'Deluxe', 3),
  ('Blanco', 'Perla', 'Híbrido', 180, 'Avanzado', 2),
  ('Negro', 'Mate', 'Eléctrico', 200, 'Basic', 4),
  ('Gris', 'Plata', 'Gasolina', 130, 'Sport', 8),
  ('Gris', 'Oscuro', 'Diesel', 110, 'Deluxe', 9),
- ('Verde', 'Metalizado'. 'Híbrido', 170, 'Avanzado', 1),
+ ('Verde', 'Metalizado', 'Híbrido', 170, 'Avanzado', 1),
  ('Amarillo', 'Mate',  'Eléctrico', 190, 'Basic', 4),
  ('Naranja', 'Metalizado', 'Gasolina', 140, 'Sport', 5),
  ('Azul Marino', 'Metalizado', 'Diesel', 125, 'Deluxe', 5),
